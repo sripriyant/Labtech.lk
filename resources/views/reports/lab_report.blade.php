@@ -1046,6 +1046,8 @@
             ->values();
             $paramResults = $specimenTest->parameterResults?->keyBy('test_parameter_id') ?? collect();
             $hasSecondColumn = $parameters->firstWhere('result_column', 2) !== null;
+            $hasInterpretation = $parameters->firstWhere('show_interpretation', true) !== null;
+            $colspan = $hasInterpretation ? 5 : 4;
             $leftParams = $parameters->where('result_column', 1)->values();
             $rightParams = $parameters->where('result_column', 2)->values();
         @endphp
@@ -1059,7 +1061,9 @@
                             <th>Result</th>
                             <th>Unit</th>
                             <th>Reference Interval</th>
-                            <th>Result Interpretation</th>
+                            @if ($hasInterpretation)
+                                <th>Result Interpretation</th>
+                            @endif
                         </tr>
                     </thead>
                         <tbody>
@@ -1070,7 +1074,7 @@
                             @endphp
                             @if ($isLabel)
                                 <tr style="font-size: {{ $parameter->font_size ?? 12 }}px;color: {{ $parameter->text_color ?? '#000' }};font-weight: {{ $parameter->is_bold ? '700' : '400' }};text-decoration: {{ $parameter->is_underline ? 'underline' : 'none' }};font-style: {{ $parameter->is_italic ? 'italic' : 'normal' }};">
-                                    <td colspan="5" style="white-space: pre-wrap;">{!! nl2br(e($labelText)) !!}</td>
+                                    <td colspan="{{ $colspan }}" style="white-space: pre-wrap;">{!! nl2br(e($labelText)) !!}</td>
                                 </tr>
                                 @continue
                             @endif
@@ -1078,12 +1082,16 @@
                                 $result = $paramResults->get($parameter->id);
                                 $rawFlag = trim((string) ($result?->flag ?? ''));
                                 $computedInterpretation = $computeLipidInterpretation($parameter->name, $result?->result_value);
-                                if ($isLipidProfileTest && $computedInterpretation !== '') {
-                                    $interpret = $computedInterpretation;
-                                } elseif ($rawFlag !== '') {
-                                    $interpret = $rawFlag;
+                                if ($parameter->show_interpretation ?? true) {
+                                    if ($isLipidProfileTest && $computedInterpretation !== '') {
+                                        $interpret = $computedInterpretation;
+                                    } elseif ($rawFlag !== '') {
+                                        $interpret = $rawFlag;
+                                    } else {
+                                        $interpret = 'NORMAL';
+                                    }
                                 } else {
-                                    $interpret = 'NORMAL';
+                                    $interpret = '';
                                 }
                                 $rowStyle = [];
                                 if ($parameter->is_bold) { $rowStyle[] = 'font-weight:700'; }
@@ -1095,7 +1103,7 @@
                             @endphp
                             @if (!empty($parameter->group_label))
                                 <tr>
-                                    <td colspan="5" class="subhead">{{ $parameter->group_label }}</td>
+                                    <td colspan="{{ $colspan }}" class="subhead">{{ $parameter->group_label }}</td>
                                 </tr>
                             @endif
                             <tr style="{{ $rowStyleText }}">
@@ -1103,7 +1111,9 @@
                                 <td><span class="result-value">{{ $result?->result_value ?? '-' }}</span></td>
                                 <td>{{ $result?->unit ?? $parameter->unit ?? '-' }}</td>
                                 <td>{{ $result?->reference_range ?? $parameter->reference_range ?? '-' }}</td>
-                                <td>{{ $interpret }}</td>
+                                @if ($hasInterpretation)
+                                    <td>{{ $interpret }}</td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
@@ -1111,7 +1121,9 @@
                                 <td><span class="result-value">{{ $specimenTest->result?->result_value ?? '-' }}</span></td>
                                 <td>{{ $specimenTest->result?->unit ?? '-' }}</td>
                                 <td>{{ $specimenTest->result?->reference_range ?? '-' }}</td>
-                                <td>NORMAL</td>
+                                @if ($hasInterpretation)
+                                    <td>NORMAL</td>
+                                @endif
                             </tr>
                         @endforelse
                     </tbody>
@@ -1127,7 +1139,9 @@
                                 <th>Result</th>
                                 <th>Unit</th>
                                 <th>Reference Interval</th>
-                                <th>Result Interpretation</th>
+                                @if ($hasInterpretation)
+                                    <th>Result Interpretation</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -1138,7 +1152,7 @@
                             @endphp
                             @if ($isLabel)
                                 <tr style="font-size: {{ $parameter->font_size ?? 12 }}px;color: {{ $parameter->text_color ?? '#000' }};font-weight: {{ $parameter->is_bold ? '700' : '400' }};text-decoration: {{ $parameter->is_underline ? 'underline' : 'none' }};font-style: {{ $parameter->is_italic ? 'italic' : 'normal' }};">
-                                    <td colspan="5" style="white-space: pre-wrap;">{!! nl2br(e($labelText)) !!}</td>
+                                    <td colspan="{{ $colspan }}" style="white-space: pre-wrap;">{!! nl2br(e($labelText)) !!}</td>
                                 </tr>
                                 @continue
                             @endif
@@ -1146,12 +1160,16 @@
                                 $result = $paramResults->get($parameter->id);
                                 $rawFlag = trim((string) ($result?->flag ?? ''));
                                 $computedInterpretation = $computeLipidInterpretation($parameter->name, $result?->result_value);
-                                if ($isLipidProfileTest && $computedInterpretation !== '') {
-                                    $interpret = $computedInterpretation;
-                                } elseif ($rawFlag !== '') {
-                                    $interpret = $rawFlag;
+                                if ($parameter->show_interpretation ?? true) {
+                                    if ($isLipidProfileTest && $computedInterpretation !== '') {
+                                        $interpret = $computedInterpretation;
+                                    } elseif ($rawFlag !== '') {
+                                        $interpret = $rawFlag;
+                                    } else {
+                                        $interpret = 'NORMAL';
+                                    }
                                 } else {
-                                    $interpret = 'NORMAL';
+                                    $interpret = '';
                                 }
                                 $rowStyle = [];
                                 if ($parameter->is_bold) { $rowStyle[] = 'font-weight:700'; }
@@ -1163,7 +1181,7 @@
                             @endphp
                                 @if (!empty($parameter->group_label))
                                     <tr>
-                                        <td colspan="5" class="subhead">{{ $parameter->group_label }}</td>
+                                        <td colspan="{{ $colspan }}" class="subhead">{{ $parameter->group_label }}</td>
                                     </tr>
                                 @endif
                                 <tr style="{{ $rowStyleText }}">
@@ -1171,15 +1189,17 @@
                                     <td><span class="result-value">{{ $result?->result_value ?? '-' }}</span></td>
                                     <td>{{ $result?->unit ?? $parameter->unit ?? '-' }}</td>
                                     <td>{{ $result?->reference_range ?? $parameter->reference_range ?? '-' }}</td>
-                                    <td class="result-interpretation-cell" data-parameter="{{ $parameter->code ?? '' }}">
-                                        @if (!$isBloodGroupAbo)
-                                            {{ $interpret }}
-                                        @endif
-                                    </td>
+                                    @if ($hasInterpretation)
+                                        <td class="result-interpretation-cell" data-parameter="{{ $parameter->code ?? '' }}">
+                                            @if (!$isBloodGroupAbo)
+                                                {{ $interpret }}
+                                            @endif
+                                        </td>
+                                    @endif
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5">-</td>
+                                    <td colspan="{{ $colspan }}">-</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -1188,7 +1208,7 @@
             @endif
         </div>
 
-        @if ($isLipidProfileTest)
+        @if ($isLipidProfileTest && $hasInterpretation)
             <div style="margin-top:8px;margin-bottom:8px;display:flex;justify-content:center;">
                 <span style="font-size:10px;font-weight:700;">* Result Interpretation-based clinical decision values:</span>
             </div>

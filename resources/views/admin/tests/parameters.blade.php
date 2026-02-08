@@ -195,6 +195,11 @@
                     <label>Active</label>
                     <input name="is_active" type="checkbox" value="1" checked style="width:auto;">
                 </div>
+                <div>
+                    <label>Show Interpretation</label>
+                    <input name="show_interpretation" type="hidden" value="0">
+                    <input name="show_interpretation" type="checkbox" value="1" checked style="width:auto;">
+                </div>
             </div>
             <div style="margin-top:12px;">
                 <button class="btn-small" type="submit">Add Parameter</button>
@@ -266,6 +271,17 @@
     </div>
 
     <div class="card table-wrap">
+        <div style="display:none;">
+            @foreach ($test->parameters as $parameter)
+                <form id="param-form-{{ $parameter->id }}" method="post" action="{{ route('tests.parameters.store', $test) }}">
+                    @csrf
+                    <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
+                </form>
+                <form id="param-delete-form-{{ $parameter->id }}" method="post" action="{{ route('tests.parameters.destroy', [$test, $parameter]) }}">
+                    @csrf
+                </form>
+            @endforeach
+        </div>
         <table>
             <thead>
                 <tr>
@@ -285,84 +301,94 @@
                     <th>Underline</th>
                     <th>Italic</th>
                     <th>Text Color</th>
+                    <th>Interpretation</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($test->parameters as $parameter)
-                    <tr>
-                        <form method="post" action="{{ route('tests.parameters.update', [$test, $parameter]) }}">
-                            @csrf
-                            <td><input class="row-input" name="name" value="{{ $parameter->name }}"></td>
-                            <td><input class="row-input" name="symbol" value="{{ $parameter->symbol }}"></td>
-                            <td><input class="row-input" name="unit" value="{{ $parameter->unit }}"></td>
-                            <td><input class="row-input" name="reference_range" value="{{ $parameter->reference_range }}"></td>
-                            <td><input class="row-input" name="remarks" value="{{ $parameter->remarks }}"></td>
-                            <td>
-                                <select class="row-input" name="display_type">
-                                    @foreach ($displayTypes as $value => $label)
-                                        <option value="{{ $value }}" {{ $parameter->display_type === $value ? 'selected' : '' }}>
-                                            {{ $label }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td><input class="row-input" name="font_size" type="number" min="8" max="48" value="{{ $parameter->font_size ?? 14 }}"></td>
-                            <td>
-                                <input class="row-input" name="dropdown_options" value="{{ implode(', ', $parameter->dropdown_options ?? []) }}" placeholder="comma separated">
-                            </td>
-                            <td><input class="row-input" name="sort_order" type="number" min="0" value="{{ $parameter->sort_order }}"></td>
-                            <td>
-                                <select class="row-input" name="result_column">
-                                    <option value="1" {{ $parameter->result_column == 1 ? 'selected' : '' }}>1</option>
-                                    <option value="2" {{ $parameter->result_column == 2 ? 'selected' : '' }}>2</option>
-                                </select>
-                            </td>
-                            <td><input class="row-input" name="group_label" value="{{ $parameter->group_label }}"></td>
-                            <td>
-                                <label style="display:flex;align-items:center;gap:6px;">
-                                    <input type="checkbox" name="is_visible" value="1" {{ $parameter->is_visible ? 'checked' : '' }}>
-                                    <span>{{ $parameter->is_visible ? 'Yes' : 'No' }}</span>
-                                </label>
-                            </td>
-                            <td>
-                                <label style="display:flex;align-items:center;gap:6px;">
-                                    <input type="checkbox" name="is_bold" value="1" {{ $parameter->is_bold ? 'checked' : '' }}>
-                                    <span>{{ $parameter->is_bold ? 'Yes' : 'No' }}</span>
-                                </label>
-                            </td>
-                            <td>
-                                <label style="display:flex;align-items:center;gap:6px;">
-                                    <input type="checkbox" name="is_underline" value="1" {{ $parameter->is_underline ? 'checked' : '' }}>
-                                    <span>{{ $parameter->is_underline ? 'Yes' : 'No' }}</span>
-                                </label>
-                            </td>
-                            <td>
-                                <label style="display:flex;align-items:center;gap:6px;">
-                                    <input type="checkbox" name="is_italic" value="1" {{ $parameter->is_italic ? 'checked' : '' }}>
-                                    <span>{{ $parameter->is_italic ? 'Yes' : 'No' }}</span>
-                                </label>
-                            </td>
-                            <td><input class="row-input" name="text_color" value="{{ $parameter->text_color }}"></td>
-                            <td>
-                                <label style="display:flex;align-items:center;gap:6px;">
-                                    <input type="checkbox" name="is_active" value="1" {{ $parameter->is_active ? 'checked' : '' }}>
-                                    <span>{{ $parameter->is_active ? 'Active' : 'Inactive' }}</span>
-                                </label>
-                            </td>
-                            <td>
-                                <button class="btn-small" type="submit">Save</button>
-                                <button class="btn-small" type="submit" formaction="{{ route('tests.parameters.destroy', [$test, $parameter]) }}" formmethod="post" onclick="return confirm('Delete this parameter?');" style="background:#b63b3b;">Delete</button>
-                            </td>
-                        </form>
+                    @php $formId = 'param-form-' . $parameter->id; @endphp
+                    <tr data-parameter-id="{{ $parameter->id }}">
+                        <td><input class="row-input" name="name" value="{{ $parameter->name }}" form="{{ $formId }}"></td>
+                        <td><input class="row-input" name="symbol" value="{{ $parameter->symbol }}" form="{{ $formId }}"></td>
+                        <td><input class="row-input" name="unit" value="{{ $parameter->unit }}" form="{{ $formId }}"></td>
+                        <td><input class="row-input" name="reference_range" value="{{ $parameter->reference_range }}" form="{{ $formId }}"></td>
+                        <td><input class="row-input" name="remarks" value="{{ $parameter->remarks }}" form="{{ $formId }}"></td>
+                        <td>
+                            <select class="row-input" name="display_type" form="{{ $formId }}">
+                                @foreach ($displayTypes as $value => $label)
+                                    <option value="{{ $value }}" {{ $parameter->display_type === $value ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td><input class="row-input" name="font_size" type="number" min="8" max="48" value="{{ $parameter->font_size ?? 14 }}" form="{{ $formId }}"></td>
+                        <td>
+                            <input class="row-input" name="dropdown_options" value="{{ implode(', ', $parameter->dropdown_options ?? []) }}" placeholder="comma separated" form="{{ $formId }}">
+                        </td>
+                        <td><input class="row-input" name="sort_order" type="number" min="0" value="{{ $parameter->sort_order }}" form="{{ $formId }}"></td>
+                        <td>
+                            <select class="row-input" name="result_column" form="{{ $formId }}">
+                                <option value="1" {{ $parameter->result_column == 1 ? 'selected' : '' }}>1</option>
+                                <option value="2" {{ $parameter->result_column == 2 ? 'selected' : '' }}>2</option>
+                            </select>
+                        </td>
+                        <td><input class="row-input" name="group_label" value="{{ $parameter->group_label }}" form="{{ $formId }}"></td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="checkbox" name="is_visible" value="1" {{ $parameter->is_visible ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->is_visible ? 'Yes' : 'No' }}</span>
+                            </label>
+                        </td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="checkbox" name="is_bold" value="1" {{ $parameter->is_bold ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->is_bold ? 'Yes' : 'No' }}</span>
+                            </label>
+                        </td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="checkbox" name="is_underline" value="1" {{ $parameter->is_underline ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->is_underline ? 'Yes' : 'No' }}</span>
+                            </label>
+                        </td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="checkbox" name="is_italic" value="1" {{ $parameter->is_italic ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->is_italic ? 'Yes' : 'No' }}</span>
+                            </label>
+                        </td>
+                        <td><input class="row-input" name="text_color" value="{{ $parameter->text_color }}" form="{{ $formId }}"></td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="hidden" name="show_interpretation" value="0" form="{{ $formId }}">
+                                <input type="checkbox" name="show_interpretation" value="1" {{ $parameter->show_interpretation ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->show_interpretation ? 'Yes' : 'No' }}</span>
+                            </label>
+                        </td>
+                        <td>
+                            <label style="display:flex;align-items:center;gap:6px;">
+                                <input type="checkbox" name="is_active" value="1" {{ $parameter->is_active ? 'checked' : '' }} form="{{ $formId }}">
+                                <span>{{ $parameter->is_active ? 'Active' : 'Inactive' }}</span>
+                            </label>
+                        </td>
+                        <td>
+                            <button class="btn-small" type="submit" form="{{ $formId }}">Save</button>
+                            <button class="btn-small" type="submit" form="param-delete-form-{{ $parameter->id }}" onclick="return confirm('Delete this parameter?')" style="background:#b63b3b;">Delete</button>
+                        </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="18">No parameters added.</td>
+                        <td colspan="19">No parameters added.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
+
+    <script>
+        // No JS needed for save/delete; buttons submit their associated forms.
+    </script>
 @endsection

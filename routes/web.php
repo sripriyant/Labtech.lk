@@ -8,6 +8,7 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CenterController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DemoRequestController;
 use App\Http\Controllers\EditResultController;
 use App\Http\Controllers\DemoAccountController;
 use App\Http\Controllers\LabStockController;
@@ -56,6 +57,7 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/demo-request', [DemoRequestController::class, 'store'])->name('demo.request');
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin/banners', [BannerController::class, 'index'])->name('banners.index');

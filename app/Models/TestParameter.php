@@ -15,6 +15,7 @@ class TestParameter extends Model
         'remarks',
         'sort_order',
         'is_active',
+        'show_interpretation',
         'is_visible',
         'is_bold',
         'is_underline',
@@ -29,6 +30,7 @@ class TestParameter extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'show_interpretation' => 'boolean',
         'sort_order' => 'integer',
         'is_visible' => 'boolean',
         'is_bold' => 'boolean',

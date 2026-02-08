@@ -586,7 +586,7 @@
         <div class="billing-tabs">
             <a class="tab-btn {{ $activeTab === 'create' ? 'active' : '' }}" data-tab="create" href="{{ route('billing.index', ['tab' => 'create']) }}">LAB BILLING</a>
             @if (!empty($canClinicBilling))
-            <a class="tab-btn {{ $activeTab === 'clinic' ? 'active' : '' }}" data-tab="clinic" href="{{ route('billing.index', ['tab' => 'clinic']) }}">CLINIC BILLING</a>
+            <a class="tab-btn {{ $activeTab === 'clinic' ? 'active' : '' }}" data-tab="clinic" href="{{ route('billing.index', ['tab' => 'clinic']) }}">Medical Laboratory & ClinicBILLING</a>
             @endif
         </div>
 
@@ -996,7 +996,7 @@
                     <input type="hidden" name="products_payload" id="clinic_products_payload" value="">
 
                     <div class="ui-card">
-                        <div class="ui-card-title">Clinic patient details</div>
+                        <div class="ui-card-title">Medical Laboratory & Clinicpatient details</div>
                         <div class="ui-form-grid" style="grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px;">
                             <div class="field">
                                 <label class="ui-label ui-required">Patient Name</label>
@@ -1116,7 +1116,7 @@
 
                     <div class="part-actions" style="--part-color:#3a4a87;margin-top:10px;">
                         <div class="action-row" style="margin-top:0;">
-                            <button type="submit" class="btn pay">SAVE CLINIC BILL</button>
+                            <button type="submit" class="btn pay">SAVE Medical Laboratory & ClinicBILL</button>
                         </div>
                     </div>
                 </form>

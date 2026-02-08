@@ -115,4 +115,15 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Request Recipient
+    |--------------------------------------------------------------------------
+    |
+    | All demo request forms will be emailed to this address.
+    |
+    */
+
+    'demo_request_to' => env('DEMO_REQUEST_EMAIL', 'support@labtech.lk'),
+
 ];

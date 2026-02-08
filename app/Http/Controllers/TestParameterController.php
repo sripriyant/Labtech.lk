@@ -27,6 +27,7 @@ class TestParameterController extends Controller
         $this->requirePermission('tests.manage');
 
         $data = $request->validate([
+            'parameter_id' => ['nullable', 'integer', 'min:1'],
             'name' => ['required', 'string', 'max:255'],
             'symbol' => ['nullable', 'string', 'max:50'],
             'unit' => ['nullable', 'string', 'max:50'],
@@ -34,6 +35,7 @@ class TestParameterController extends Controller
             'remarks' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
+            'show_interpretation' => ['nullable', 'boolean'],
             'is_visible' => ['nullable', 'boolean'],
             'is_bold' => ['nullable', 'boolean'],
             'is_underline' => ['nullable', 'boolean'],
@@ -46,7 +48,7 @@ class TestParameterController extends Controller
             'dropdown_options' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        $test->parameters()->create([
+        $payload = [
             'name' => $data['name'],
             'symbol' => $data['symbol'] ?? null,
             'unit' => $data['unit'] ?? null,
@@ -54,6 +56,7 @@ class TestParameterController extends Controller
             'remarks' => $data['remarks'] ?? null,
             'sort_order' => $data['sort_order'] ?? 0,
             'is_active' => (bool) ($data['is_active'] ?? false),
+            'show_interpretation' => (bool) ($data['show_interpretation'] ?? true),
             'is_visible' => (bool) ($data['is_visible'] ?? false),
             'is_bold' => (bool) ($data['is_bold'] ?? false),
             'is_underline' => (bool) ($data['is_underline'] ?? false),
@@ -64,7 +67,14 @@ class TestParameterController extends Controller
             'display_type' => $data['display_type'] ?? 'textbox',
             'font_size' => $data['font_size'] ?? 14,
             'dropdown_options' => $this->parseDropdownOptions($data['dropdown_options'] ?? null),
-        ]);
+        ];
+
+        if (!empty($data['parameter_id'])) {
+            $parameter = $test->parameters()->whereKey($data['parameter_id'])->firstOrFail();
+            $parameter->update($payload);
+        } else {
+            $test->parameters()->create($payload);
+        }
 
         return redirect()->route('tests.parameters', $test);
     }
@@ -85,6 +95,7 @@ class TestParameterController extends Controller
             'remarks' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
+            'show_interpretation' => ['nullable', 'boolean'],
             'is_visible' => ['nullable', 'boolean'],
             'is_bold' => ['nullable', 'boolean'],
             'is_underline' => ['nullable', 'boolean'],
@@ -105,6 +116,7 @@ class TestParameterController extends Controller
             'remarks' => $data['remarks'] ?? null,
             'sort_order' => $data['sort_order'] ?? 0,
             'is_active' => (bool) ($data['is_active'] ?? false),
+            'show_interpretation' => (bool) ($data['show_interpretation'] ?? $parameter->show_interpretation ?? true),
             'is_visible' => (bool) ($data['is_visible'] ?? false),
             'is_bold' => (bool) ($data['is_bold'] ?? false),
             'is_underline' => (bool) ($data['is_underline'] ?? false),

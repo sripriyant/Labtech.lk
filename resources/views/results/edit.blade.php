@@ -380,12 +380,13 @@
                         'remarks' => $parameter->remarks,
                         'result_value' => $result?->result_value,
                         'result_unit' => $result?->unit,
-                        'result_reference_range' => $result?->reference_range,
-                        'result_remarks' => $result?->remarks,
-                        'flag' => $result?->flag,
-                    ];
-                })->values(),
-            ];
+                    'result_reference_range' => $result?->reference_range,
+                    'result_remarks' => $result?->remarks,
+                    'flag' => $result?->flag,
+                    'show_interpretation' => (bool) ($parameter->show_interpretation ?? true),
+                ];
+            })->values(),
+        ];
         })->all();
     @endphp
 
@@ -494,14 +495,18 @@
                     }
                     parameterRows.innerHTML = params.map(function (param) {
                         var label = param.symbol ? (param.name + ' (' + param.symbol + ')') : param.name;
+                        var showInterpretation = param.show_interpretation !== false;
+                        var flagCell = showInterpretation
+                            ? '<input class="row-input flag-input" name="parameter_results[' + param.id + '][flag]" value="' + (param.flag || '') + '" readonly>'
+                            : '<span class="flag-muted">-</span>';
                         return '' +
-                            '<tr>' +
+                            '<tr data-show-interpretation="' + (showInterpretation ? '1' : '0') + '">' +
                             '<td>' + label + '</td>' +
                             '<td><input class="row-input" name="parameter_results[' + param.id + '][result_value]" value="' + (param.result_value || '') + '"></td>' +
                             '<td><input class="row-input readonly" name="parameter_results[' + param.id + '][unit]" value="' + (param.unit || '') + '" readonly></td>' +
                             '<td><input class="row-input readonly" name="parameter_results[' + param.id + '][reference_range]" value="' + (param.reference_range || '') + '" readonly></td>' +
                             '<td><input class="row-input" name="parameter_results[' + param.id + '][remarks]" value="' + (param.result_remarks || param.remarks || '') + '"></td>' +
-                            '<td><input class="row-input flag-input" name="parameter_results[' + param.id + '][flag]" value="' + (param.flag || '') + '" readonly></td>' +
+                            '<td>' + flagCell + '</td>' +
                             '</tr>';
                     }).join('');
                     bindFlagUpdates();
@@ -698,7 +703,7 @@
                     var flagInput = row.querySelector('.flag-input');
                     var label = row.querySelector('td');
                     var paramName = label ? label.textContent : '';
-                    if (!valueInput || !refInput || !flagInput || !shouldShowFlag(paramName)) {
+                    if (!valueInput || !refInput || !flagInput || row.dataset.showInterpretation !== '1' || !shouldShowFlag(paramName)) {
                         return;
                     }
                     var updateFlag = function () {

@@ -254,8 +254,11 @@ class EditResultController extends Controller
                     $ref = trim((string) $parameter->reference_range);
                     $remarks = trim((string) ($payload['remarks'] ?? ''));
                     $numericValue = is_numeric($value) ? (float) $value : null;
-                    $flag = $this->determineLipidInterpretation($parameter->name, $numericValue, $patientSex)
-                        ?? $this->computeFlagFromRange($value, $ref, $patientSex);
+                    $flag = null;
+                    if ($parameter->show_interpretation ?? true) {
+                        $flag = $this->determineLipidInterpretation($parameter->name, $numericValue, $patientSex)
+                            ?? $this->computeFlagFromRange($value, $ref, $patientSex);
+                    }
 
                     if ($value === '' && $remarks === '' && $flag === '') {
                         continue;

@@ -6,7 +6,10 @@
     <title>labtech.lk | Laboratory Information System</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css->family=outfit:300,400,500,600,700,800|dm-serif-display:400" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=outfit:300,400,500,600,700,800|dm-serif-display:400" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/logo.png') }}">
 
     <style>
         :root {
@@ -15,7 +18,7 @@
             --accent: #2ec4b6;
             --ink: #0f1e26;
             --muted: #5a6b76;
-            --bg: #edf2f5;
+            --bg: #ffffff;
             --card: #ffffff;
             --line: #d7e1e8;
             --shadow: 0 18px 40px rgba(6, 22, 34, 0.08);
@@ -46,10 +49,11 @@
         }
 
         .topbar {
-            background: var(--brand-deep);
-            color: #fff;
+            background: #f8fafc;
+            color: var(--muted);
             padding: 10px 0;
             font-size: 13px;
+            border-bottom: 1px solid var(--line);
         }
 
         .topbar .container {
@@ -81,11 +85,11 @@
         }
 
         .logo-img {
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
+            width: 156px;
+            height: 156px;
+            border-radius: 54px;
             background: #fff;
-            padding: 8px;
+            padding: 24px;
             box-shadow: 0 18px 32px rgba(6, 54, 71, 0.15);
             object-fit: contain;
         }
@@ -151,7 +155,7 @@
         }
 
         .btn.accent {
-            background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
             color: #fff;
             box-shadow: var(--shadow);
             border-color: transparent;
@@ -172,7 +176,7 @@
 
         .hero {
             padding: 70px 0 60px;
-            background: radial-gradient(circle at top left, #dff2f4 0, #edf2f5 55%);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         }
 
         .hero-grid {
@@ -268,18 +272,18 @@
         .mini-card {
             border-radius: 10px;
             padding: 10px;
-            background: linear-gradient(140deg, #0b5a77, #2ec4b6);
+            background: linear-gradient(140deg, var(--brand), var(--accent));
             color: #fff;
             font-size: 11px;
             font-weight: 600;
         }
 
         .mini-card:nth-child(2) {
-            background: linear-gradient(140deg, #1d4ed8, #38bdf8);
+            background: linear-gradient(140deg, var(--brand), var(--accent));
         }
 
         .mini-card:nth-child(3) {
-            background: linear-gradient(140deg, #f97316, #facc15);
+            background: linear-gradient(140deg, var(--brand), var(--accent));
         }
 
         .pill-list.compact span {
@@ -336,19 +340,19 @@
             position: absolute;
             inset: 0;
             opacity: 0.12;
-            background: linear-gradient(135deg, #2ec4b6, #1d4ed8);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .stat-card:nth-child(2)::before {
-            background: linear-gradient(135deg, #f97316, #facc15);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .stat-card:nth-child(3)::before {
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .stat-card:nth-child(4)::before {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .stat-card > * {
@@ -392,14 +396,63 @@
             border-radius: 18px;
             padding: 20px;
             border: 1px solid var(--line);
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -40% -40% auto;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(46, 196, 182, 0.18), rgba(46, 196, 182, 0));
+            pointer-events: none;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .feature-icon svg,
+        .pill-icon svg,
+        .module-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
         }
 
         .feature-card h4 {
             margin: 0 0 8px;
         }
 
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .feature-card:nth-child(4) .feature-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
         .why-section {
-            background: #f3f7fa;
+            background: #ffffff;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
         }
 
         .why-header {
@@ -443,35 +496,35 @@
             place-items: center;
             font-size: 24px;
             color: #fff;
-            background: linear-gradient(135deg, #1d4ed8, #38bdf8);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(2) .why-icon {
-            background: linear-gradient(135deg, #16a34a, #22c55e);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(3) .why-icon {
-            background: linear-gradient(135deg, #f97316, #facc15);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(4) .why-icon {
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(5) .why-icon {
-            background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(6) .why-icon {
-            background: linear-gradient(135deg, #ef4444, #f97316);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(7) .why-icon {
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card:nth-child(8) .why-icon {
-            background: linear-gradient(135deg, #0f766e, #2dd4bf);
+            background: linear-gradient(135deg, var(--brand), var(--accent));
         }
 
         .why-card h4 {
@@ -513,6 +566,16 @@
             font-size: 14px;
         }
 
+        .demo-textarea {
+            min-height: 110px;
+            border-radius: 12px;
+            border: 1px solid #d6e3ea;
+            padding: 12px 14px;
+            background: #f7fbfd;
+            font-size: 14px;
+            resize: vertical;
+        }
+
         .demo-inline {
             display: grid;
             grid-template-columns: 90px 1fr;
@@ -525,8 +588,8 @@
             gap: 6px;
             padding: 4px 10px;
             border-radius: 999px;
-            background: #e8f2ff;
-            color: #1d4ed8;
+            background: rgba(11, 90, 119, 0.12);
+            color: var(--brand);
             font-weight: 700;
             font-size: 11px;
         }
@@ -535,6 +598,33 @@
             display: grid;
             gap: 12px;
             margin-top: 10px;
+        }
+
+        .demo-success {
+            margin-top: 14px;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .demo-error {
+            color: #dc2626;
+            font-size: 11px;
+        }
+
+        .demo-error-banner {
+            margin-top: 12px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
         }
 
         .demo-check {
@@ -549,7 +639,7 @@
             height: 48px;
             border-radius: 14px;
             border: none;
-            background: #1d4ed8;
+            background: var(--brand);
             color: #fff;
             font-weight: 700;
             font-size: 14px;
@@ -558,7 +648,7 @@
         .demo-secondary {
             border: none;
             background: transparent;
-            color: #1d4ed8;
+            color: var(--brand);
             font-weight: 700;
             font-size: 13px;
             text-align: left;
@@ -579,35 +669,205 @@
             border: 1px solid #e1e9ef;
         }
 
+        .workflow-pills {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .workflow-pills .pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-weight: 600;
+            color: var(--brand-deep);
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .workflow-pills .pill-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+            color: #fff;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .workflow-panel {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .workflow-panel ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 12px;
+            color: var(--muted);
+        }
+
+        .workflow-panel li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .workflow-panel li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 800;
+            margin-top: 2px;
+        }
+
+        .module-card {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .module-card:nth-child(2) .module-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .module-card:nth-child(3) .module-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
+        .module-card:nth-child(4) .module-icon {
+            background: linear-gradient(135deg, var(--brand), var(--accent));
+        }
+
         .footer {
-            background: #14a8a6;
-            color: #e9f3f7;
-            padding: 40px 0;
-            border-top-left-radius: 18px;
-            border-top-right-radius: 18px;
+            background: var(--brand-deep);
+            color: #dbe7f4;
+            padding: 60px 0 30px;
+        }
+
+        .footer-cta {
+            background: radial-gradient(circle at top, rgba(46, 196, 182, 0.2), rgba(6, 54, 71, 0.9) 60%),
+                        linear-gradient(135deg, var(--brand-deep), #0a2030);
+            border-radius: 24px;
+            padding: 48px 28px;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(2, 8, 23, 0.45);
+            margin-bottom: 40px;
+        }
+
+        .footer-cta h2 {
+            margin: 0 0 10px;
+            font-size: clamp(24px, 3.2vw, 36px);
+            color: #ffffff;
+        }
+
+        .footer-cta p {
+            margin: 0 0 22px;
+            color: #cbd5e1;
+        }
+
+        .footer-cta .cta-btn {
+            background: linear-gradient(135deg, var(--accent), #22c3b4);
+            color: #0b1526;
+            padding: 14px 28px;
+            border-radius: 14px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .footer-cta .cta-meta {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 18px;
+            font-size: 13px;
+            color: #94a3b8;
         }
 
         .footer-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 18px;
+            gap: 22px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-logo-wrap {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #ffffff;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 24px rgba(2, 10, 20, 0.25);
+        }
+
+        .footer-logo {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .footer-brand strong {
+            line-height: 1;
+            font-size: 18px;
         }
 
         .footer h4 {
-            margin: 0 0 10px;
-            color: #fff;
+            margin: 0 0 12px;
+            color: #ffffff;
+        }
+
+        .footer a {
+            color: #cbd5e1;
+            font-size: 13px;
         }
 
         .footer-bottom {
-            margin-top: 24px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(148, 163, 184, 0.2);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             gap: 12px;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
+            color: #94a3b8;
         }
 
         .social-links {
@@ -617,9 +877,9 @@
         }
 
         .social-links img {
-            width: 24px;
-            height: 24px;
-            filter: grayscale(100%) brightness(2);
+            width: 22px;
+            height: 22px;
+            filter: brightness(1.6) grayscale(40%);
         }
 
         .cta-strip {
@@ -676,6 +936,191 @@
             background: #f7fafc;
         }
 
+        .app-section {
+            background: radial-gradient(circle at 70% 25%, rgba(46, 196, 182, 0.28), rgba(6, 54, 71, 0.92) 60%),
+                        linear-gradient(135deg, var(--brand-deep), #0a2030);
+            color: #e2e8f0;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .app-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 196, 182, 0.18);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .app-title {
+            margin: 16px 0 12px;
+            font-size: clamp(26px, 3.2vw, 38px);
+            color: #ffffff;
+        }
+
+        .app-title span {
+            color: var(--accent);
+        }
+
+        .app-copy {
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .app-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 18px;
+            margin: 18px 0 24px;
+            padding: 0;
+            list-style: none;
+            font-size: 13px;
+        }
+
+        .app-list li::before {
+            content: "\2713";
+            margin-right: 8px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .app-cta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .app-button {
+            background: linear-gradient(135deg, var(--accent), #22c3b4);
+            color: #0b1526;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 220px;
+            box-shadow: 0 14px 30px rgba(34, 195, 180, 0.35);
+        }
+
+        .app-button span {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .app-meta {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .app-note {
+            margin-top: 14px;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .app-device {
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        .laptop-frame {
+            width: min(520px, 100%);
+            border-radius: 22px;
+            padding: 18px;
+            background: linear-gradient(180deg, var(--brand-deep), #1f2937);
+            border: 2px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 30px 60px rgba(15, 23, 42, 0.6);
+        }
+
+        .laptop-screen {
+            background: linear-gradient(180deg, #111827, #1f2937);
+            border-radius: 16px;
+            padding: 16px;
+            color: #f8fafc;
+            display: grid;
+            gap: 14px;
+            min-height: 260px;
+        }
+
+        .laptop-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .laptop-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .laptop-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #fff;
+            color: #0f172a;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+        }
+
+        .laptop-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .laptop-card {
+            background: rgba(148, 163, 184, 0.15);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 12px;
+            display: grid;
+            gap: 6px;
+        }
+
+        .laptop-card strong {
+            font-size: 18px;
+        }
+
+        .laptop-card.success {
+            background: rgba(16, 185, 129, 0.25);
+        }
+
+        .laptop-base {
+            height: 14px;
+            margin: 12px auto 0;
+            width: 80%;
+            background: #0b1220;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 12px 24px rgba(2, 8, 23, 0.45);
+        }
+
+        .device-glow {
+            position: absolute;
+            inset: 10%;
+            border-radius: 26px;
+            border: 1px solid rgba(45, 212, 191, 0.3);
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
         @media (max-width: 960px) {
             .container {
                 padding: 0 18px;
@@ -712,6 +1157,10 @@
             .split {
                 grid-template-columns: 1fr;
             }
+
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 720px) {
@@ -740,6 +1189,10 @@
             .footer-bottom {
                 flex-direction: column;
                 text-align: center;
+            }
+
+            .app-list {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -856,18 +1309,42 @@
             <p class="lead">From front desk to final report, labtech.lk keeps every step connected with secure audit trails.</p>
             <div class="feature-grid">
                 <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                            <path d="M2 10h20"></path>
+                            <path d="M6 15h4"></path>
+                        </svg>
+                    </div>
                     <h4>Patient + Billing</h4>
                     <p>Quick billing, discounts, package handling, and multi-payment support.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
                     <h4>Sample Tracking</h4>
                     <p>Specimen status timelines, barcode labels, and center wise queues.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9 12l2 2 4-4"></path>
+                        </svg>
+                    </div>
                     <h4>Results & Validation</h4>
                     <p>Structured test parameters, flags, and approval workflows.</p>
                 </div>
                 <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 7h18s-3 0-3-7"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
                     <h4>Reporting & Alerts</h4>
                     <p>PDF reports, SMS/Email/WhatsApp messaging, and QR verification.</p>
                 </div>
@@ -880,16 +1357,40 @@
             <div>
                 <h2>Built for labs, not spreadsheets.</h2>
                 <p class="lead">Align staff, reduce turnaround time, and maintain compliance with built-in audit logs and approvals.</p>
-                <div class="pill-list">
-                    <span>Specimen intake + triage</span>
-                    <span>Analyzer integration ready</span>
-                    <span>Centre & doctor wise reports</span>
-                    <span>Inventory-aware workflows</span>
+                <div class="workflow-pills">
+                    <div class="pill"><span class="pill-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M14 2v6.5l4.5 7.8A3 3 0 0 1 16 20H8a3 3 0 0 1-2.5-3.7L10 8.5V2"></path>
+                            <path d="M8 2h8"></path>
+                        </svg>
+                    </span>Specimen intake + triage</div>
+                    <div class="pill"><span class="pill-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M9 2v6"></path>
+                            <path d="M15 2v6"></path>
+                            <path d="M12 12v8"></path>
+                            <path d="M7 8h10"></path>
+                            <path d="M5 8a7 7 0 0 0 14 0"></path>
+                        </svg>
+                    </span>Analyzer integration ready</div>
+                    <div class="pill"><span class="pill-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </span>Centre & doctor wise reports</div>
+                    <div class="pill"><span class="pill-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </span>Inventory-aware workflows</div>
                 </div>
             </div>
-            <div class="panel">
+            <div class="workflow-panel">
                 <h4>Workflow highlights</h4>
-                <ul style="margin:0; padding-left:18px; color: var(--muted);">
+                <ul>
                     <li>Sample collected -> lab received -> tested -> validated -> approved.</li>
                     <li>Automatic TAT tracking and SLA alerts.</li>
                     <li>Audit trail for every result update.</li>
@@ -903,19 +1404,44 @@
             <h2>Core modules</h2>
             <p class="lead">Pick the modules you need and scale for multi-centre operations.</p>
             <div class="feature-grid">
-                <div class="feature-card">
+                <div class="feature-card module-card">
+                    <div class="module-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="9" y="2" width="6" height="4" rx="1"></rect>
+                            <path d="M9 4H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"></path>
+                        </svg>
+                    </div>
                     <h4>Test Master</h4>
                     <p>Departments, panels, reference ranges, and billing visibility.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card module-card">
+                    <div class="module-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
                     <h4>Inventory</h4>
                     <p>Reagents, consumption tracking, reorder alerts, and suppliers.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card module-card">
+                    <div class="module-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                    </div>
                     <h4>Analytics</h4>
                     <p>Operational dashboards, KPI summaries, and financials.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card module-card">
+                    <div class="module-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"></path>
+                        </svg>
+                    </div>
                     <h4>Patient Portal</h4>
                     <p>Secure report delivery with download links and QR checks.</p>
                 </div>
@@ -939,33 +1465,46 @@
         <div class="container split">
             <div>
                 <h2>Request Demo</h2>
-                <p class="lead">Demo booking placeholder. We will activate online demo requests here soon.</p>
+                <p class="lead">Tell us about your lab and we will contact you with a personalized demo and onboarding plan.</p>
+                @if (session('demo_success'))
+                    <div class="demo-success">{{ session('demo_success') }}</div>
+                @endif
+                @if (session('demo_error'))
+                    <div class="demo-error-banner">{{ session('demo_error') }}</div>
+                @endif
+
             </div>
             <div class="panel">
-                <h4>Demo Request Form (Coming Soon)</h4>
-                <form class="demo-form">
+                <h4>Demo Request Form</h4>
+                <form class="demo-form" method="post" action="{{ route('demo.request') }}">
+                    @csrf
                     <label class="demo-field">
                         Your name
-                        <input class="demo-input" type="text" placeholder="Full name" disabled>
+                        <input class="demo-input" name="name" type="text" value="{{ old('name') }}" required>
+                        @error('name')<small class="demo-error">{{ $message }}</small>@enderror
                     </label>
                     <label class="demo-field">
                         Lab name
-                        <input class="demo-input" type="text" placeholder="Lab / center name" disabled>
+                        <input class="demo-input" name="lab_name" type="text" value="{{ old('lab_name') }}" required>
+                        @error('lab_name')<small class="demo-error">{{ $message }}</small>@enderror
                     </label>
                     <label class="demo-field">
-                        Mobile number <span class="demo-badge">OTP Required</span>
-                        <div class="demo-inline">
-                            <input class="demo-input" type="text" value="+94" disabled>
-                            <input class="demo-input" type="text" placeholder="Mobile no." disabled>
-                        </div>
+                        Email
+                        <input class="demo-input" name="email" type="email" value="{{ old('email') }}" required>
+                        @error('email')<small class="demo-error">{{ $message }}</small>@enderror
+                    </label>
+                    <label class="demo-field">
+                        Mobile number
+                        <input class="demo-input" name="phone" type="text" value="{{ old('phone') }}" required>
+                        @error('phone')<small class="demo-error">{{ $message }}</small>@enderror
+                    </label>
+                    <label class="demo-field">
+                        Message
+                        <textarea class="demo-textarea" name="message" placeholder="Tell us about your needs">{{ old('message') }}</textarea>
+                        @error('message')<small class="demo-error">{{ $message }}</small>@enderror
                     </label>
                     <div class="demo-actions">
-                        <button class="demo-secondary" type="button" disabled>+ Add referral code</button>
-                        <label class="demo-check">
-                            <input type="checkbox" disabled>
-                            <span>I agree to Terms &amp; Conditions and Privacy Policy.</span>
-                        </label>
-                        <button class="demo-primary" type="button" disabled>Continue</button>
+                        <button class="demo-primary" type="submit">Send Request</button>
                     </div>
                 </form>
             </div>
@@ -1024,69 +1563,138 @@
         </div>
     </section>
 
-    <section id="contact" class="section">
-        <div class="container split">
+    <section class="section app-section" id="app">
+        <div class="container app-grid">
             <div>
-                <h2>Talk to labtech.lk</h2>
-                <p class="lead">We help diagnostic centers launch a faster LIS, with secure reporting and automation.</p>
-                <div class="pill-list">
-                    <span>Email: support@labtech.lk</span>
-                    <span>Phone: +94 77 270 2303</span>
-                    <span>HQ: Colombo, Sri Lanka</span>
+                <span class="app-badge">Mobile App Available</span>
+                <h2 class="app-title">Download Our <span>IOS / Android App</span></h2>
+                <p class="app-copy">
+                    Take Labtech.lk with you everywhere. Manage your Medical Laboratory & Clinicon the go with a feature-rich Android application.
+                </p>
+                <ul class="app-list">
+                    <li>Web Based Application </li>
+                    <li>QR Scanner</li>
+                    <li>SMS Alerts&amp; Test Master </li>
+                    <li>Stock management</li>
+                      <li>Shop  </li>
+                    <li>Laboratory & Clinic Billing</li>
+                    <li>Pre loaded Report formats &amp; Test Master </li>
+                    <li>Marketting & Accounts</li>
+                </ul>
+                <div class="app-cta">
+                    <button class="app-button" type="button">
+                        <span>Book a Demo</span>
+                    </button>
+                    <div class="app-meta">
+                        <br>
+
+                    </div>
+                </div>
+                <div class="app-note">
                 </div>
             </div>
-            <div class="panel">
-                <h4>Quick Links</h4>
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <a href="/login">LIS Login</a>
-                    <a href="/shop">Lab Shop</a>
-                    <a href="#demo">Request Demo</a>
+            <div class="app-device">
+                <div class="laptop-frame">
+                    <div class="laptop-screen">
+                        <div class="laptop-top">
+                            <span>10:10</span>
+                            <span>Online</span>
+                        </div>
+                        <div class="laptop-brand">
+                            <div class="laptop-logo">L</div>
+                            <div>
+                                <div style="font-weight:700;">Labtech.lk</div>
+                                <div style="font-size:12px;color:#cbd5e1;">Medical Laboratory &amp; Clinic Management</div>
+                            </div>
+                        </div>
+                        <div class="laptop-grid">
+                            <div class="laptop-card success">
+                                Today's Patients
+                                <strong>38</strong>
+                            </div>
+                            <div class="laptop-card">
+                                Validations
+                                <strong>62</strong>
+                            </div>
+                            <div class="laptop-card">
+                                Pending Reports
+                                <strong>19</strong>
+                            </div>
+                            <div class="laptop-card">
+                                Revenue
+                                <strong>Rs. 45,000</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="laptop-base"></div>
                 </div>
+                <div class="device-glow"></div>
+            </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container footer-grid">
-            <div>
-                <h4>labtech.lk</h4>
-                <p>Modern laboratory information system for diagnostic excellence.</p>
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-cta">
+                <h2>Medical Laboratory System</h2>
+                <p>Join hundreds of clinics already using Labtech.lk. Start your free trial today.</p>
+                <a class="cta-btn" href="/login">Start Free Trial -></a>
+                <div class="cta-meta">
+                    <span>WhatsApp: {{ $settings['contact_phone'] ?? '+94 77 270 2303' }}</span>
+                    <span>Email: {{ $settings['support_email'] ?? 'support@labtech.lk' }}</span>
+                </div>
             </div>
-            <div>
-                <h4>Products</h4>
-                <a href="/shop">Shop</a><br>
-                <a href="/login">LIS Login</a>
+
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <div class="footer-logo-wrap">
+                            <img class="footer-logo" src="{{ asset('images/logo.png') }}" alt="labtech.lk logo">
+                        </div>
+                        <strong style="color:#fff;">labtech.lk</strong>
+                    </div>
+                    <p style="margin-top:10px; color:#94a3b8;">Modern Medical Laboratory & Clinicand laboratory management solution designed for healthcare providers in Sri Lanka.</p>
+                    <div class="social-links" style="margin-top:12px;">
+                        <a href="#" aria-label="Facebook">
+                            <img src="{{ asset('images/facebook.png') }}" alt="Facebook">
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <img src="{{ asset('images/linkedin.png') }}" alt="LinkedIn">
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <img src="{{ asset('images/youtube.png') }}" alt="YouTube">
+                        </a>
+                        <a href="#" aria-label="Instagram">
+                            <img src="{{ asset('images/instagram.png') }}" alt="Instagram">
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="/">Home</a><br>
+                    <a href="#features">Features</a><br>
+                    <a href="#pricing">Pricing</a><br>
+                    <a href="#workflow">Workflow</a><br>
+                    <a href="#demo">About Us</a>
+                </div>
+                <div>
+                    <h4>Legal</h4>
+                    <a href="/privacy">Privacy Policy</a><br>
+                    <a href="/terms">Terms of Service</a>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <div>+94 77 270 2303</div>
+                    <div>support@labtech.lk</div>
+                    <div>Sri Lanka</div>
+                </div>
             </div>
-            <div>
-                <h4>Support</h4>
-                <a href="/contact">Contact</a><br>
-                <a href="#demo">Request Demo</a>
+
+            <div class="footer-bottom">
+                <div>Copyright (c) {{ date('Y') }} Labtech.lk. All rights reserved.</div>
+                <div>Powered by <a href="https://byocloud.lk" style="color:#e2e8f0; font-weight:600;">Byocloud.lk</a></div>
             </div>
-            <div>
-                <h4>Compliance</h4>
-                <div>ISO-ready workflows</div>
-                <div>Audit logs & approvals</div>
-            </div>
-        </div>
-        <div class="container footer-bottom">
-            <div class="social-links">
-                <a href="#" aria-label="Facebook">
-                    <img src="{{ asset('images/facebook.png') }}" alt="Facebook">
-                </a>
-                <a href="#" aria-label="LinkedIn">
-                    <img src="{{ asset('images/linkedin.png') }}" alt="LinkedIn">
-                </a>
-                <a href="#" aria-label="YouTube">
-                    <img src="{{ asset('images/youtube.png') }}" alt="YouTube">
-                </a>
-                <a href="#" aria-label="Instagram">
-                    <img src="{{ asset('images/instagram.png') }}" alt="Instagram">
-                </a>
-                <a href="#" aria-label="Twitter">
-                    <img src="{{ asset('images/twitter.png') }}" alt="Twitter">
-                </a>
-            </div>
-            <div>&copy; 2026 <a href="https://byocloud.lk" style="color:#ffffff; font-weight:700;">Byocloud.lk</a></div>
         </div>
     </footer>
 </body>

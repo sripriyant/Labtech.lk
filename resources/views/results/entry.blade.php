@@ -445,6 +445,7 @@
                     'result_reference_range' => $result?->reference_range,
                     'result_remarks' => $result?->remarks,
                     'flag' => $result?->flag,
+                    'show_interpretation' => (bool) ($parameter->show_interpretation ?? true),
                     'display_type' => $parameter->display_type ?? 'textbox',
                     'font_size' => $parameter->font_size ?? 14,
                     'dropdown_options' => $parameter->dropdown_options ?? [],
@@ -599,14 +600,18 @@
                     parameterRows.innerHTML = params.map(function (param) {
                         var label = param.symbol ? (param.name + ' (' + param.symbol + ')') : param.name;
                         var dataName = escapeHtml(param.name || '');
+                        var showInterpretation = param.show_interpretation !== false;
+                        var flagCell = showInterpretation
+                            ? '<input class="row-input flag-input" name="parameter_results[' + param.id + '][flag]" value="' + escapeHtml(param.flag || '') + '" readonly>'
+                            : '<span class="flag-muted">-</span>';
                         return '' +
-                            '<tr data-param-name="' + dataName + '">' +
+                            '<tr data-param-name="' + dataName + '" data-show-interpretation="' + (showInterpretation ? '1' : '0') + '">' +
                             '<td>' + label + '</td>' +
                             '<td>' + renderResultField(param) + '</td>' +
                             '<td><input class="row-input" name="parameter_results[' + param.id + '][unit]" value="' + escapeHtml(param.unit || '') + '" readonly></td>' +
                             '<td><input class="row-input" name="parameter_results[' + param.id + '][reference_range]" value="' + escapeHtml(param.reference_range || '') + '" readonly></td>' +
                             '<td><input class="row-input" name="parameter_results[' + param.id + '][remarks]" value="' + escapeHtml(param.result_remarks || param.remarks || '') + '"></td>' +
-                            '<td><input class="row-input flag-input" name="parameter_results[' + param.id + '][flag]" value="' + escapeHtml(param.flag || '') + '" readonly></td>' +
+                            '<td>' + flagCell + '</td>' +
                             '</tr>';
                     }).join('');
                     bindFlagUpdates();
@@ -1481,7 +1486,7 @@
                     var flagInput = row.querySelector('.flag-input');
                     var label = row.querySelector('td');
                     var paramName = label ? label.textContent : '';
-                    if (!valueInput || !refInput || !flagInput || !shouldShowFlag(paramName)) {
+                    if (!valueInput || !refInput || !flagInput || row.dataset.showInterpretation !== '1' || !shouldShowFlag(paramName)) {
                         return;
                     }
                     var updateFlag = function () {
