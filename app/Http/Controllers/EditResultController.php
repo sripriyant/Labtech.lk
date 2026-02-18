@@ -128,6 +128,8 @@ class EditResultController extends Controller
             'unit' => ['nullable', 'string', 'max:50'],
             'reference_range' => ['nullable', 'string', 'max:50'],
             'parameter_results' => ['nullable', 'array'],
+            'parameter_results.*.result_value' => ['nullable', 'string'],
+            'parameter_results.*.remarks' => ['nullable', 'string', 'max:255'],
             'parameter_results.*.image' => ['nullable', 'image', 'max:5120'],
             'is_repeated' => ['nullable', 'boolean'],
             'is_confirmed' => ['nullable', 'boolean'],
@@ -268,12 +270,12 @@ class EditResultController extends Controller
                     }
                     $numericValue = is_numeric($value) ? (float) $value : null;
                     $flag = null;
-                    if ($parameter->show_interpretation ?? true) {
+                    if ($value !== '' && ($parameter->show_interpretation ?? true)) {
                         $flag = $this->determineLipidInterpretation($parameter->name, $numericValue, $patientSex)
                             ?? $this->computeFlagFromRange($value, $ref, $patientSex);
                     }
 
-                    if ($value === '' && $remarks === '' && $flag === '' && $imagePath === null) {
+                    if ($value === '' && $remarks === '' && $imagePath === null) {
                         continue;
                     }
 
