@@ -124,6 +124,11 @@
             <h2>{{ $test->name }} ({{ $test->code }})</h2>
             <a class="btn-small" href="{{ route('tests.index') }}" style="text-decoration:none;">Back to Tests</a>
         </div>
+        @if (!empty($parameterSetupError))
+            <div style="margin-bottom:12px;padding:10px 12px;border:1px solid #f3c1c1;background:#fff1f1;color:#7a1c1c;border-radius:8px;font-size:13px;">
+                {{ $parameterSetupError }}
+            </div>
+        @endif
         <form method="post" action="{{ route('tests.parameters.store', $test) }}" enctype="multipart/form-data">
             @csrf
             <div class="form-grid">
@@ -350,7 +355,7 @@
                         </td>
                         <td><input class="row-input" name="font_size" type="number" min="8" max="48" value="{{ $parameter->font_size ?? 14 }}" form="{{ $formId }}"></td>
                         <td>
-                            <input class="row-input" name="dropdown_options" value="{{ implode(', ', $parameter->dropdown_options ?? []) }}" placeholder="comma separated" form="{{ $formId }}">
+                            <input class="row-input" name="dropdown_options" value="{{ implode(', ', (array) ($parameter->dropdown_options ?? [])) }}" placeholder="comma separated" form="{{ $formId }}">
                         </td>
                         <td><input class="row-input" name="sort_order" type="number" min="0" value="{{ $parameter->sort_order }}" form="{{ $formId }}"></td>
                         <td>

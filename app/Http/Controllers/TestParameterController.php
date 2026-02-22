@@ -6,8 +6,11 @@ use App\Models\TestMaster;
 use App\Models\TestParameter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Database\QueryException;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -17,10 +20,24 @@ class TestParameterController extends Controller
     {
         $this->requirePermission('tests.manage');
 
-        $test->load('parameters');
+        $parameterSetupError = null;
+
+        if (!Schema::hasTable('test_parameters')) {
+            $test->setRelation('parameters', new Collection());
+            $parameterSetupError = 'Test parameter table is missing on this server. Please run database migrations.';
+        } else {
+            try {
+                $test->load('parameters');
+            } catch (QueryException $exception) {
+                report($exception);
+                $test->setRelation('parameters', new Collection());
+                $parameterSetupError = 'Test parameter schema is out of sync on this server. Please run database migrations and clear caches.';
+            }
+        }
 
         return view('admin.tests.parameters', [
             'test' => $test,
+            'parameterSetupError' => $parameterSetupError,
         ]);
     }
 

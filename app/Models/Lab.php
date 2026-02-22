@@ -198,10 +198,22 @@ class Lab extends Model
         DB::transaction(function () use ($defaultCenters): void {
             $centerMap = [];
             foreach ($defaultCenters as $center) {
-                $clone = $center->replicate();
-                $clone->lab_id = $this->id;
-                $clone->parent_center_id = null;
-                $clone->save();
+                // Keep preload idempotent by keying on (lab_id, code).
+                $clone = Center::withoutGlobalScopes()->updateOrCreate(
+                    [
+                        'lab_id' => $this->id,
+                        'code' => $center->code,
+                    ],
+                    [
+                        'name' => $center->name,
+                        'address' => $center->address,
+                        'contact_phone' => $center->contact_phone,
+                        'contact_email' => $center->contact_email,
+                        'referral_discount_pct' => $center->referral_discount_pct,
+                        'parent_center_id' => null,
+                        'is_active' => $center->is_active,
+                    ]
+                );
                 $centerMap[$center->id] = $clone;
             }
 

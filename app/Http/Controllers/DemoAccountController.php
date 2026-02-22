@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 namespace App\Http\Controllers;
 
@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class DemoAccountController extends Controller
 {
-    public function store(Request ): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        ->requirePermission('admin.dashboard');
+        $this->requirePermission('admin.dashboard');
 
-         = ->user();
-        if (! || !->isSuperAdmin()) {
+        $user = $request->user();
+        if (!$user || !$user->isSuperAdmin()) {
             abort(403);
         }
 
-         = ->validate([
+        $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email'],
             'phone' => ['nullable', 'string', 'max:30'],
@@ -26,12 +26,13 @@ class DemoAccountController extends Controller
         ]);
 
         DemoAccount::create([
-            'name' => ['name'],
-            'email' => ['email'] ?? null,
-            'phone' => ['phone'] ?? null,
-            'expires_at' => ['expires_at'],
-            'notes' => ['notes'] ?? null,
-            'created_by' => ->id,
+            'lab_id' => $user->lab_id,
+            'name' => $data['name'],
+            'email' => $data['email'] ?? null,
+            'phone' => $data['phone'] ?? null,
+            'expires_at' => $data['expires_at'],
+            'notes' => $data['notes'] ?? null,
+            'created_by' => $user->id,
         ]);
 
         return back()->with('demoAccountSuccess', 'Demo account created.');
